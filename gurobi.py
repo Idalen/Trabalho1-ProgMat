@@ -22,7 +22,7 @@ def guropi(cost_mat):
 
     for t in range(numT):
 	    constraintT.append(
-            m.addConstr(quicksum(x[t][c] for c in range(numC)) == 1 ,'constraintT%d' % t)
+            m.addConstr(quicksum(x[t][c] for c in range(numC)) == 1 ,'constraintT%d' % c)
         )
 	
     for c in range(numC):

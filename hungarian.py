@@ -60,15 +60,13 @@ def assignMatrix(matrix):
     #print(matrix)
 
     for i in range(len(matrix)):
-        zeroesInRow = list(np.where(matrix[i,:] == 0)[0])
+        zeroesInRow = np.where(matrix[i,:] == 0)[0]
         if len(zeroesInRow) >= 1:
             assignedMatrix[i][zeroesInRow[0]] = True
-            zeroesInCol = list(np.where(matrix[:,zeroesInRow[0]] == 0)[0])
-            for zeroes in zeroesInCol:
-                matrix[zeroes,zeroesInRow[0]] = -1 
+            
+            matrix[:,zeroesInRow[0]][matrix[:,zeroesInRow[0]] == 0] = -1
+            matrix[i,:][matrix[i,:] == 0] = -1
             matrix[i,zeroesInRow[0]] = 0
-            for zeroes in zeroesInRow[1:]:
-                matrix[i,zeroes] = -1
     
     #print("assignedMatrix\n")
     #print(assignedMatrix)
@@ -83,20 +81,16 @@ def squarenizeMatrix(matrix):
     if matrixShape[0] != matrixShape[1]:
         maxShape = max(matrixShape)
         squareMatrix = np.zeros((maxShape,maxShape))
-        for i in range(matrixShape[0]):
-            for j in range(matrixShape[1]):
-                squareMatrix[i][j] = matrix[i][j]
+        squareMatrix[:matrixShape[0],:matrixShape[1]] = matrix
+        return squareMatrix
     else:
-        squareMatrix = matrix
+        return matrix
 
-    return squareMatrix
 
 #OK
 def matrixReduction(matrix):
-    for i in range(len(matrix)): 
-        matrix[i, :]-=np.min(matrix[i, :])
-    for i in range(len(matrix)): 
-        matrix[:, i]-= np.min(matrix[:,i])        
+    matrix -= np.min(matrix,axis=1)[:,None] #By each line
+    matrix -= np.min(matrix,axis=0) #By each column
     return matrix
 
 
@@ -115,19 +109,13 @@ def getMinVal(crossedMatrix,rowsUnmarked,colsMarked):
 
 def fixMatrix(matrix,rowsUnmarked,colsMarked,minVal):
     fixedMatrix = matrix
+    lenM = len(matrix)
+    rowsTuple = tuple([i for i in range(lenM) if rowsUnmarked[i] == 1])
+    colsTuple = tuple([i for i in range(lenM) if colsMarked[i] == 1])
+    fixedMatrix -= minVal
+    fixedMatrix[rowsTuple,:] += minVal
+    fixedMatrix[:,colsTuple] += minVal
 
-    for i in range(len(matrix)):
-        for j in range(len(matrix)):
-            if rowsUnmarked[i] == 1 and colsMarked[j] == 1:
-                #print("Line "+str(i)+"Col "+str(j)+" Intersection")
-                fixedMatrix[i][j] += minVal
-            elif not (rowsUnmarked[i] == 1 or colsMarked[j] == 1):
-                #print("Line "+str(i)+"Col "+str(j)+" Free")
-                fixedMatrix[i][j] -= minVal
-                #print("Line "+str(i)+"Col "+str(j)+" Not important")
-    #print("fixedMatrix\n")
-    #print(fixedMatrix)
-    #print("\n\n\n")
     return fixedMatrix
 
 
@@ -179,7 +167,8 @@ def hungarianMethod(matrix):
             break
         squareMatrix = alterMatrixValues(crossedMatrix,rowsUnmarked,colsMarked)
         iter += 1
-    jobs = getJobs(crossedMatrix)   
+    jobs = getJobs(crossedMatrix)
+    print("Jobs: "+str(jobs))   
     return np.sum(oldMatrix[tuple(jobs)])
     
 #assign a row if it has only one 0, else skip the row temporarily
