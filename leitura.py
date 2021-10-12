@@ -16,6 +16,7 @@
 import numpy as np
 
 # Dados sobre a formatacao dos nomes dos arquivos
+pastas = ["a", "b"]
 u = [2,3]
 v = [1,2,3,4,5,6,7,8,9,10]
 n = [50,100,200,500,1000]
@@ -33,19 +34,20 @@ n = [50,100,200,500,1000]
 
 
 # Leitura dos dados
-for tipo_lucro in u: # Range para as variacoes de 2 e 3
-    
-    # Se tipo_lucro eh 2 entao lucro (cada item da matriz) esta no intervalo de [5, 50]
-    # Se tipo_lucro eh 3 entao lucro (cada item da matriz) esta no intervalo de [5, 500]
-    
-    for instancia in v: # Range para as variacoes de 1,2,3,4,5...
-        for tarefas_agentes in n: # Range para as variacoes de 50, 100, 200...
-            print("--------------------INICIO DE insta_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt---------------------")
-            
-            # Carregamento do arquivo para matriz_lida com numpy.loadtxt()
-            matriz_lida = np.loadtxt("./insta/insta_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt")
-            
-            # Faca a magica aqui...
-            print(matriz_lida)
-            
-            print("--------------------FIM DE insta_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt------------------------")
+for tipo_pasta in pastas: # Range para cada pasta, no caso pasta A e B
+    for tipo_lucro in u: # Range para as variacoes de 2 e 3
+        
+        # Se tipo_lucro eh 2 entao lucro (cada item da matriz) esta no intervalo de [5, 50]
+        # Se tipo_lucro eh 3 entao lucro (cada item da matriz) esta no intervalo de [5, 500]
+        
+        for instancia in v: # Range para as variacoes de 1,2,3,4,5...
+            for tarefas_agentes in n: # Range para as variacoes de 50, 100, 200...
+                print("--------------------INICIO DE inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt---------------------")
+                
+                # Carregamento do arquivo para matriz_lida com numpy.loadtxt()
+                matriz_lida = np.loadtxt("./inst"+tipo_pasta+"/inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt")
+                
+                # Faca a magica aqui...
+                # print(matriz_lida)
+                
+                print("--------------------FIM DE inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt------------------------")
