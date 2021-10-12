@@ -23,13 +23,13 @@ n = [50,100,200,500,1000]
 
 # Leitura de tarefas/agentes (TALVEZ SEJA DESNECESSARIO)
 # for tarefas_agentes in n: # Range para as variacoes de 50, 100, 200...
-          
-#     print("--------------------INICIO DE inst_"+ str(tarefas_agentes) +".txt---------------------")
+#     nome_arquivo = "_" + str(tarefas_agentes) + ".txt"
+#     print("--------------------INICIO DE inst" + nome_arquivo + "---------------------")
             
 #     # Faca a magica aqui...
-#     tarefas_agentes = np.loadtxt("./insta/inst_1_"+ str(tarefas_agentes) +".txt")
+#     tarefas_agentes = np.loadtxt("./insta/inst_1" + nome_arquivo)
             
-#     print("--------------------FIM DE inst_"+ str(tarefas_agentes) +".txt------------------------")
+#     print("--------------------FIM DE inst" + nome_arquivo + "------------------------")
 
 
 
@@ -42,12 +42,13 @@ for tipo_pasta in pastas: # Range para cada pasta, no caso pasta A e B
         
         for instancia in v: # Range para as variacoes de 1,2,3,4,5...
             for tarefas_agentes in n: # Range para as variacoes de 50, 100, 200...
-                print("--------------------INICIO DE inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt---------------------")
+                nome_arquivo = "inst" + tipo_pasta + "_" + str(tipo_lucro) + "_" + str(instancia) + "_" + str(tarefas_agentes) + ".txt"
+                print("--------------------INICIO DE " + nome_arquivo + "---------------------")
                 
                 # Carregamento do arquivo para matriz_lida com numpy.loadtxt()
-                matriz_lida = np.loadtxt("./inst"+tipo_pasta+"/inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt")
+                matriz_lida = np.loadtxt("./inst" + tipo_pasta + "/" + nome_arquivo)
                 
                 # Faca a magica aqui...
                 # print(matriz_lida)
                 
-                print("--------------------FIM DE inst"+tipo_pasta+"_"+str(tipo_lucro)+"_"+str(instancia)+"_"+ str(tarefas_agentes) +".txt------------------------")
+                print("--------------------FIM DE " + nome_arquivo + "------------------------")
