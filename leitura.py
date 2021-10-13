@@ -26,6 +26,7 @@ v = [1,2,3,4,5,6,7,8,9,10]
 n = [50,100,200,500,1000]
 
 all_times = np.array([])
+total_time = 0
 
 # Leitura dos dados
 for tipo_pasta in pastas: # Range para cada pasta, no caso pasta A e B
@@ -43,8 +44,9 @@ for tipo_pasta in pastas: # Range para cada pasta, no caso pasta A e B
                 
                 start = time.time()
                 
+                # Escolha um dos metodos:
                 # hungarianMethod(matriz_lida)
-                guropi(matriz_lida)
+                # guropi(matriz_lida)
                 # cbc2(matriz_lida)
                 
                 end = time.time()
@@ -52,6 +54,7 @@ for tipo_pasta in pastas: # Range para cada pasta, no caso pasta A e B
                 # Calcula o tempo gasto nessa execucao e salva em all_times
                 curr_time = end - start           
                 all_times = np.append(all_times, curr_time)
+                total_time += curr_time
                 
                 print(f"Runtime is {curr_time}")
 
@@ -63,3 +66,5 @@ for index, tarefas_agentes in enumerate(n):
     # Ele faz um skip do index dado, com step do tamanho de len
     # Isso eh necessario para termos a media de cada tamanho de arquivo
     print("\n")
+
+print("Tempo total: ", total_time)
