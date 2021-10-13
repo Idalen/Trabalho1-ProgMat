@@ -136,16 +136,14 @@ def getJobs(matrix):
         #print("matrix in worker"+str(workerId))
         #print(matrix)
         #print("Entering search for worker"+str(workerId))
-        qtts = [[] if j in worked else list(np.where(matrix[j,:] == 0)[0]) for j in range(len(matrix))]
+        qtts = [[len(list(np.where(matrix[j,:] == 0)[0])),j] for j in range(len(matrix)) if not j in worked]
+        minZeroesLine = min(qtts)[1]
+        cols = list(np.where(matrix[minZeroesLine,:] == 0)[0])
+        worked[minZeroesLine] = cols[0]
+        matrix[:,cols[0]][matrix[:,cols[0]] == 0] = -1
         #print("qtts")
         #print(qtts)
         #print("\n\n\n\n")
-        zeros = [[j,qtts[j][0]] for j in range(len(qtts)) if len(qtts[j]) == 1]
-        for zero in zeros:
-            worked[zero[0]] = zero[1]
-            matrix[:,zero[1]][matrix[:,zero[1]] == 0] = -1
-            matrix[matrix[:,zero[1]] == 0] = -1
-            #print("Job "+str(zero)+" done")
     listOfKeyVal = np.array([[k, v] for k, v in worked.items()])
     likv2 = [tuple(listOfKeyVal[:,0]),tuple(listOfKeyVal[:,1])]
     return likv2
@@ -206,4 +204,4 @@ c4 = np.array([[2, 9, 2, 7, 1],
                [4, 2, 7, 3, 1],
                [5, 3, 9, 5, 1]])
 
-print(hungarianMethod(c1))
+print(hungarianMethod(c3))
