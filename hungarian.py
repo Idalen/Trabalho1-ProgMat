@@ -1,4 +1,5 @@
 import numpy as np
+import networkx as nx
 
 def drawLines(matrix,assignedMatrix):
     rowsMarked = [1 if np.sum(row)==0 else 0 for row in assignedMatrix] #Tick an unassigned row
@@ -126,8 +127,31 @@ def alterMatrixValues(crossedMatrix,rowsUnmarked,colsMarked):
     #print("minVal: "+str(minVal))
     return fixMatrix(crossedMatrix,rowsUnmarked,colsMarked,minVal)
 
-
 def getJobs(matrix):
+    matrix[matrix == -1] = 0
+    #print("matrix")
+    #print(matrix)
+    #Create graph
+    G = nx.Graph()
+    for i in range(len(matrix)):
+        G.add_node((i,"worker"),bipartite=0)
+        G.add_node((i,"job"),bipartite=1)
+    
+    zeroes = np.where(matrix == 0)
+    edges = [[(zeroes[0][i],"worker"),(zeroes[1][i],"job")] for i in range(len(zeroes[0]))]
+    #print("edges")
+    #print(edges)
+    G.add_edges_from(edges)
+    #get maximal cardinality matching from biparted graph G
+    matching = list(nx.max_weight_matching(G,maxcardinality=True))
+    #plot matching pairs
+    #nx.draw_networkx_nodes(G,pos=nx.spring_layout(G),nodelist=matching,node_color='r')
+    #print("\n\nmatching")
+    #print(matching)
+    jobs = np.array([[match[0][0],match[1][0]] if match[0][1] == "worker" else (match[1][0],match[0][0]) for match in matching])
+    return [tuple(jobs[:,0]),tuple(jobs[:,1])]
+
+def oldGetJobs(matrix):
     matrix[matrix == -1] = 0
     worked = {}
     #print("matrix")
@@ -204,4 +228,4 @@ c4 = np.array([[2, 9, 2, 7, 1],
                [4, 2, 7, 3, 1],
                [5, 3, 9, 5, 1]])
 
-print(hungarianMethod(c3))
+print(hungarianMethod(c4))
